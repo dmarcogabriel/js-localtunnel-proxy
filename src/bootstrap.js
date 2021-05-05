@@ -1,23 +1,32 @@
-require('dotenv').config()
 const lt = require('localtunnel')
-const {blue, green} = require('chalk')
+const {blueBright, bgBlue, black} = require('chalk')
+const {argv} = require('./config')
+const _ = require('lodash')
 
-module.exports = async (port, subdomain) => {
-  const tunnel = await lt({
-    port,
-    subdomain,
-  })
-  console.log(`Your URL is: ${blue(tunnel.url)}`)
-  console.log(`Listenning to port: ${blue(port)}`)
+const {PORT, SUBDOMAIN} = process.env
 
-  tunnel.on('request', info => {
-    console.log(green('INFO'), info)
-  })
+module.exports = async () => {
+  try {
+    const port = argv.p || argv.port || PORT
+    const subdomain = argv.s || argv.subdomain || SUBDOMAIN
 
-  tunnel.on('close', () => {
-    console.log(green('Thanks for using.'))
-    console.log(green(':)'))
-    tunnel.close()
-  })
+    if (_.isNil(subdomain) || _.isNil(port)) {
+      const message =
+        'SUBDOMAIN or PORT cannot be null. Please check README file'
+      throw new Error(message)
+    }
+
+    const tunnel = await lt({port, subdomain})
+
+    console.clear()
+    console.log(`Your URL is: ${blueBright(tunnel.url)}`)
+    console.log(`Listenning to port: ${bgBlue(` ${black(port)} `)}`)
+
+    tunnel.on('request', info => {
+      console.space()
+      console.info(info)
+    })
+  } catch (error) {
+    console.error(error.message)
+  }
 }
-

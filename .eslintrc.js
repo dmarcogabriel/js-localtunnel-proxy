@@ -13,5 +13,6 @@ module.exports = {
   'rules': {
     'arrow-parens': ['error', 'as-needed'],
     'semi': ['error', 'never'],
+    'no-undef': 'error',
   },
 }
