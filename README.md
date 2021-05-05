@@ -5,15 +5,6 @@
 This is a simple app to run a instance of localtunnel with the provided `PORT` and
 `SUBDOMAIN`.
 
-You just have to add a `bootstrap` function at `src/index.js`:
-
-```js
-...
-const bootstrap = require('./bootstrap')
-...
-bootstrap(PORT, SUBDOMAIN)
-```
-
 ## StyleGuide
 
 Here it's applied the [Google Javascript StyleGuide](https://google.github.io/styleguide/jsguide.html)
